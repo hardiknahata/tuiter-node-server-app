@@ -10,8 +10,12 @@ const createTuit = (req, res) => {
     newTuit.replies = 0;
     newTuit.retuits = 0;
     newTuit.verified = true;
-    newTuit.image = "react_logo.png";
+    newTuit.dislikes = 0;
+    newTuit.image = "nasa_logo.png";
+    newTuit.handle = "@nasa";
+    newTuit.username = "NASA";
 
+    newTuit.time = "now";
 
     tuits.push(newTuit);
     res.json(newTuit);
