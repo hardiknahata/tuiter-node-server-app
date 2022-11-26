@@ -1,10 +1,12 @@
-import posts from "./tuits.js";
-let tuits = posts;
+import * as tuitsDao from './tuits-dao.js'
 
-const createTuit = (req, res) => {
+// import posts from "./tuits.js";
+// let tuits = posts;
+
+const createTuit = async (req, res) => {
     const newTuit = req.body;
-    console.log(newTuit)
-    newTuit._id = (new Date()).getTime()+'';
+    
+    // newTuit._id = (new Date()).getTime()+'';
     newTuit.likes = 0;
     newTuit.liked = false;
     newTuit.replies = 0;
@@ -17,32 +19,44 @@ const createTuit = (req, res) => {
 
     newTuit.time = "now";
 
-    tuits.push(newTuit);
-    res.json(newTuit);
+    // tuits.push(newTuit);
+    const insertedTuit = await tuitsDao.createTuit(newTuit);    
+    
+    res.json(insertedTuit);
   }
   
 
-const findTuits = (req, res) =>
-   res.json(tuits);
-
-   
-const updateTuit = (req, res) => {
-  const tuitdIdToUpdate = req.params.tid;
-  const updates = req.body;
-  const tuitIndex = tuits.findIndex(
-    (t) => t._id === tuitdIdToUpdate)
-  tuits[tuitIndex] = 
-    {...tuits[tuitIndex], ...updates};
-  console.log(tuits);    
-  res.sendStatus(200);
+// const findTuits = (req, res) =>
+//    res.json(tuits);
+const findTuits = async (req, res) => {
+  const tuits = await tuitsDao.findTuits()
+  res.json(tuits);
 }
 
 
-const deleteTuit = (req, res) => {
+   
+const updateTuit = async (req, res) => {
+  const tuitdIdToUpdate = req.params.tid;
+  const updates = req.body;
+
+  // const tuitIndex = tuits.findIndex(
+  //   (t) => t._id === tuitdIdToUpdate)
+  // tuits[tuitIndex] = 
+  //   {...tuits[tuitIndex], ...updates};
+  // console.log(tuits);    
+  // res.sendStatus(200);
+
+  const status = await tuitsDao.updateTuit(tuitdIdToUpdate, updates);
+  res.json(status);  
+}
+
+
+const deleteTuit = async (req, res) => {
     const tuitdIdToDelete = req.params.tid;
-    tuits = tuits.filter((t) =>
-    t._id !== tuitdIdToDelete);
-    res.sendStatus(200);
+    const status = await tuitsDao.deleteTuit(tuitdIdToDelete);    
+    // tuits = tuits.filter((t) =>
+    // t._id !== tuitdIdToDelete);
+    res.json(status);
   }
   
 

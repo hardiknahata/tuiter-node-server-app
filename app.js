@@ -1,5 +1,6 @@
 import express from 'express'
 import cors from 'cors'
+import mongoose from "mongoose";
 
 import HelloController
   from "./controllers/hello-controller.js"
@@ -11,6 +12,8 @@ import TuitsController
 const app = express()
 app.use(cors())
 app.use(express.json());
+
+mongoose.connect('mongodb://localhost:27017/tuiter');
 
 TuitsController(app);
 HelloController(app)
