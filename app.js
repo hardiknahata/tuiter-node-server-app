@@ -2,9 +2,6 @@ import express from 'express'
 import cors from 'cors'
 import mongoose from "mongoose";
 
-const CONNECTION_STRING = process.env.DB_CONNECTION_STRING || 'mongodb://localhost:27017/tuiter'
-mongoose.connect(CONNECTION_STRING);
-
 import HelloController
   from "./controllers/hello-controller.js"
 import UserController
@@ -16,7 +13,10 @@ const app = express()
 app.use(cors())
 app.use(express.json());
 
-mongoose.connect('mongodb://localhost:27017/tuiter');
+const CONNECTION_STRING = process.env.DB_CONNECTION_STRING || 'mongodb://localhost:27017/tuiter'
+mongoose.connect(CONNECTION_STRING);
+  
+// mongoose.connect('mongodb://localhost:27017/tuiter');
 
 TuitsController(app);
 HelloController(app)
